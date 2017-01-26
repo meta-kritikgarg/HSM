@@ -1,2 +1,7 @@
 DocFormatter/~$a.docx
 DocFormatter/~$M Doc 005 - Verification, Review & Evaluation v5.docx
+*.log
+.metadata/
+RemoteSystemsTempFiles
+*.class
+*.class
