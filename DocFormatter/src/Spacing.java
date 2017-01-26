@@ -41,7 +41,7 @@ public class Spacing {
 					if (xwpfTableCell != null) {
 						//System.out.println(xwpfTableCell.getText());
 						//System.out.println(row.get(i).+" "+ xwpfTableCell.getText());
-						CTTc cttc = xwpfTableCell.getCTTc();
+				/*		CTTc cttc = xwpfTableCell.getCTTc();
 						CTTcPr tcPr = cttc.getTcPr();
 						
 						
@@ -57,7 +57,7 @@ public class Spacing {
 						}
 						ctb.setSz(BigInteger.valueOf(10));
 						ctb.setVal(STBorder.SINGLE);
-						ctb.setColor("FFFFFF");
+						ctb.setColor("FFFFFF");*/
 						
 						//borders.setBottom(ctb);
 						
