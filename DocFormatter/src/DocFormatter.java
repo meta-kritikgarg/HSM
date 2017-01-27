@@ -42,8 +42,9 @@ public class DocFormatter {
 					if ("TABLE".equalsIgnoreCase(docElements.get(i))) {
 						tcounter++;
 						System.out.println(tcounter);
-						if(tcounter!=1) {
+						if(tcounter!=0) {
 							Indent.formatTable(doc.getTableArray(tcounter));
+							CellBorder.formatTable(doc.getTableArray(tcounter));
 							Spacing.formatTable(doc.getTableArray(tcounter));
 							Spacing.setbeforeTable(doc.getParagraphArray(pcounter));
 							Spacing.setafterTable(doc.getParagraphArray(pcounter+1));
