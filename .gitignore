@@ -5,3 +5,6 @@ DocFormatter/~$M Doc 005 - Verification, Review & Evaluation v5.docx
 RemoteSystemsTempFiles
 *.class
 *.class
+*.classpath
+DocFormatter/.classpath
+DocFormatter/.classpath
