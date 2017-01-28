@@ -7,6 +7,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBorder;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblBorders;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
@@ -31,11 +32,9 @@ public class CellBorder {
 				if (xwpfTableCell != null) {
 					XWPFParagraph p = xwpfTableCell.getParagraphArray(0);
 
-					//					System.out.println(p.getIndentFromLeft() + p.getStyle()+" -- "+ p.getText());
+					//System.out.println(p.getIndentFromLeft() + p.getStyle()+" -- "+ p.getText());
 					if(p.getStyleID()!= null && p.getStyleID().contains("dotlist")) {
-						System.out.println("Cell Border -- dotList");
-
-						//p.setIndentFromLeft(490);
+						//System.out.println("Cell Border -- dotList");
 						levelOne = true;
 					}
 
@@ -47,28 +46,38 @@ public class CellBorder {
 						CTBorder ctb;
 						if(borders.getTop()==null) {
 							ctb = borders.addNewTop();
+							setCellBorder(ctb);
 						} else {
-							ctb = borders.addNewTop();
+							ctb = borders.getTop();
+							setCellBorder(ctb);
 						}
-						ctb.setSz(BigInteger.valueOf(12));
-						ctb.setVal(STBorder.SINGLE);
-						ctb.setColor("000000");
 					}
 
-					//p.setIndentFromLeft(490);
 				}
 			}
 		}
 
-		CTBorder top;
-		if(xwpfTable.getCTTbl().getTblPr().getTblBorders()!=null ){
-			 top = xwpfTable.getCTTbl().getTblPr().getTblBorders().getLeft();
-		} else {
-			 top = xwpfTable.getCTTbl().getTblPr().addNewTblBorders().addNewLeft();
-		}
-		CTTblBorders borders = xwpfTable.getCTTbl().getTblPr().getTblBorders();
-		borders.setBottom(top);
-		borders.setTop(top);
+		
+		CTTblPr tblpro = xwpfTable.getCTTbl().getTblPr();
+
+		CTTblBorders borders = tblpro.addNewTblBorders();
+		setTableBorder(borders.addNewBottom());		
+		setTableBorder(borders.addNewRight());
+		setTableBorder(borders.addNewLeft());
+		setTableBorder(borders.addNewTop());	
+	}
+	
+	
+	public static void setTableBorder(CTBorder border) {
+		border.setSz(BigInteger.valueOf(24));
+		border.setVal(STBorder.SINGLE); 
+		border.setColor("A6A6A6");
+	}
+	
+	public static void setCellBorder(CTBorder ctb) {
+		ctb.setSz(BigInteger.valueOf(12));
+		ctb.setVal(STBorder.SINGLE);
+		ctb.setColor("FFFFFF");
 	}
 
 }

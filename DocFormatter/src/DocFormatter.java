@@ -21,7 +21,8 @@ public class DocFormatter {
 			} else {
 
 				XWPFDocument doc = new XWPFDocument(new FileInputStream(fileName));
-				FileOutputStream fos = new FileOutputStream("C:/Users/admin/Documents/Drive/OneDrive/"+fileName);
+				//FileOutputStream fos = new FileOutputStream("C:/Users/admin/Documents/Drive/OneDrive/"+fileName);
+				FileOutputStream fos = new FileOutputStream("v1"+fileName);
 
 				Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
 
