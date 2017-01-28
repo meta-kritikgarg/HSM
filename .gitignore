@@ -8,3 +8,5 @@ RemoteSystemsTempFiles
 *.classpath
 DocFormatter/.classpath
 DocFormatter/.classpath
+*.class
+*.classpath
