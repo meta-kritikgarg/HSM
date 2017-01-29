@@ -7,7 +7,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBorder;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
@@ -41,23 +40,7 @@ public class Spacing {
 					if (xwpfTableCell != null) {
 						//System.out.println(xwpfTableCell.getText());
 						//System.out.println(row.get(i).+" "+ xwpfTableCell.getText());
-				/*		CTTc cttc = xwpfTableCell.getCTTc();
-						CTTcPr tcPr = cttc.getTcPr();
 						
-						
-						
-						 
-						CTTcBorders borders = tcPr.addNewTcBorders();
-						CTBorder ctb;
-						if(borders.getBottom()==null) {
-						 ctb = borders.addNewBottom();
-						} else {
-						 ctb = borders.getBottom();
-
-						}
-						ctb.setSz(BigInteger.valueOf(10));
-						ctb.setVal(STBorder.SINGLE);
-						ctb.setColor("FFFFFF");*/
 						
 						//borders.setBottom(ctb);
 						
