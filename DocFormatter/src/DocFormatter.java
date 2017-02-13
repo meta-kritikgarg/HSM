@@ -15,7 +15,7 @@ public class DocFormatter {
 
 		int tableCounter = 0;
 		try {
-			String fileName = "HSM Doc 005 - Verification, Review & Evaluation v5.docx";
+			String fileName = "HSM Doc 007 - Risk Management v5.docx";
 			if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
 				throw new FileFormatException();
 			} else {
@@ -43,7 +43,7 @@ public class DocFormatter {
 					if ("TABLE".equalsIgnoreCase(docElements.get(i))) {
 						tcounter++;
 						System.out.println(tcounter);
-						if(tcounter!=0) {
+						if(tcounter!=0 && tcounter!=8 ) {
 							Indent.formatTable(doc.getTableArray(tcounter));
 							CellBorder.formatTable(doc.getTableArray(tcounter));
 							Spacing.formatTable(doc.getTableArray(tcounter));
