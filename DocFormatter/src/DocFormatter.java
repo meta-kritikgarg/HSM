@@ -3,19 +3,34 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.poi.hwmf.record.HwmfBitmapDib.Compression;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.xmlbeans.impl.piccolo.io.FileFormatException;
 
+import Static.OldFormats;
+import filehandler.FileFounder;
+import paragraph.ParagraphAnalizer;
+
 public class DocFormatter {
 	public static void main(String[] args) throws Exception {
 
+		
+		List<String> files = FileFounder.getAllfiles("/C:/Users/Kritik Garg/Documents/OutSide/Weston/OME");
+		Set<String> setOfFormats = new HashSet<String>();
+
+//		for (String fileName : files) {
+			
+		
+		
 		int tableCounter = 0;
 		try {
-			String fileName = "HSM Doc 005 - Verification, Review & Evaluation v5.docx";
+			String fileName = "OME Doc No. 001 - Engine Room Operational Requirements v1.docx";
 			if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
 				throw new FileFormatException();
 			} else {
@@ -32,14 +47,23 @@ public class DocFormatter {
 				int pcounter = -1;
 				int tcounter = -1;
 
+				
 				while (bodyElementIterator.hasNext()) {
 					IBodyElement element = bodyElementIterator.next();
 					docElements.add(element.getElementType().name());
+					
+					if ("PARAGRAPH".equalsIgnoreCase(element.getElementType().name())) {
+						pcounter++;
+						//ParagraphAnalizer.getStyle(doc.getParagraphArray(pcounter));
+						setOfFormats.add(ParagraphAnalizer.getStyle(doc.getParagraphArray(pcounter)));
+					}
+					
 				}
 
 
+				
 
-				for(int i=0 ; i < docElements.size() ; i++) {
+		/*		for(int i=0 ; i < docElements.size() ; i++) {
 					if ("TABLE".equalsIgnoreCase(docElements.get(i))) {
 						tcounter++;
 						System.out.println(tcounter);
@@ -61,18 +85,19 @@ public class DocFormatter {
 
 				System.out.println(docElements);
 
-
+*/
 
 				doc.write(fos);
 
 				doc.close();
 
+				System.out.println(setOfFormats);
 				System.out.println(doc.getTables().size());
 				System.out.println(doc.getParagraphs().size());
 				System.out.println(doc.getBodyElements().size());
 
 
-				System.out.println(tableCounter);
+			//	System.out.println(tableCounter);
 
 			}
 		} catch (FileFormatException e) {
@@ -84,5 +109,6 @@ public class DocFormatter {
 		}
 
 	}
+//	}
 
 }
