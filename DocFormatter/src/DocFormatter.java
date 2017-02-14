@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,10 +12,14 @@ import java.util.Set;
 import org.apache.poi.hwmf.record.HwmfBitmapDib.Compression;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFStyles;
 import org.apache.xmlbeans.impl.piccolo.io.FileFormatException;
 
 import Static.OldFormats;
 import filehandler.FileFounder;
+import filehandler.FileHandler;
 import paragraph.ParagraphAnalizer;
 
 public class DocFormatter {
@@ -30,13 +35,28 @@ public class DocFormatter {
 		
 		int tableCounter = 0;
 		try {
-			String fileName = "OME Doc No. 001 - Engine Room Operational Requirements v1.docx";
+			String fileName = "templete.docx";
 			if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
 				throw new FileFormatException();
 			} else {
 
 				XWPFDocument doc = new XWPFDocument(new FileInputStream(fileName));
 				//FileOutputStream fos = new FileOutputStream("C:/Users/admin/Documents/Drive/OneDrive/"+fileName);
+				
+				XWPFDocument template = FileHandler.openFile("templete.docx");       
+				      
+				
+				
+				XWPFParagraph para = template.createParagraph();
+				para.setStyle("checkedlist");
+
+				XWPFRun run = para.createRun();
+				run.setText("hi this is dot text");
+				FileOutputStream nfos = new FileOutputStream("v1.docx");
+
+				template.write(nfos);
+				
+				
 				FileOutputStream fos = new FileOutputStream("v1"+fileName);
 
 				Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
