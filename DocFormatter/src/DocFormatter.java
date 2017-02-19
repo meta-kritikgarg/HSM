@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,15 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.poi.hwmf.record.HwmfBitmapDib.Compression;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFStyles;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.impl.piccolo.io.FileFormatException;
 
-import Static.OldFormats;
 import filehandler.FileFounder;
 import filehandler.FileHandler;
 import paragraph.ParagraphAnalizer;
@@ -25,110 +22,122 @@ import paragraph.ParagraphAnalizer;
 public class DocFormatter {
 	public static void main(String[] args) throws Exception {
 
-		
+
 		List<String> files = FileFounder.getAllfiles("/C:/Users/Kritik Garg/Documents/OutSide/Weston/OME");
 		Set<String> setOfFormats = new HashSet<String>();
 
-//		for (String fileName : files) {
+		List<XWPFTable> listOfGeneratedTable = new ArrayList<XWPFTable>();
+
+		XWPFTable xwpfTable = null;
+
+		int i =1;
+		for (String fileName : files) {
+
 			
-		
-		
-		int tableCounter = 0;
-		try {
-			String fileName = "templete.docx";
-			if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
-				throw new FileFormatException();
-			} else {
 
-				XWPFDocument doc = new XWPFDocument(new FileInputStream(fileName));
-				//FileOutputStream fos = new FileOutputStream("C:/Users/admin/Documents/Drive/OneDrive/"+fileName);
-				
-				XWPFDocument template = FileHandler.openFile("templete.docx");       
-				      
-				
-				
-				XWPFParagraph para = template.createParagraph();
-				para.setStyle("checkedlist");
+			try {
+				//String fileName = "OME Doc No. 001 - Engine Room Operational Requirements v1.docx";
+				if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
+					throw new FileFormatException();
+				} else {
 
-				XWPFRun run = para.createRun();
-				run.setText("hi this is dot text");
-				FileOutputStream nfos = new FileOutputStream("v1.docx");
+					XWPFDocument doc = new XWPFDocument(new FileInputStream(fileName));
+					//FileOutputStream fos = new FileOutputStream("C:/Users/admin/Documents/Drive/OneDrive/"+fileName);
 
-				template.write(nfos);
-				
-				
-				FileOutputStream fos = new FileOutputStream("v1"+fileName);
+					XWPFDocument template = FileHandler.openFile("templete1.docx");     
+					//template.
 
-				Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
+					Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
 
-				List<String> docElements = new ArrayList<String>();
-
-
-				int pcounter = -1;
-				int tcounter = -1;
-
-				
-				while (bodyElementIterator.hasNext()) {
-					IBodyElement element = bodyElementIterator.next();
-					docElements.add(element.getElementType().name());
+					Boolean tableSwitch = false;
 					
-					if ("PARAGRAPH".equalsIgnoreCase(element.getElementType().name())) {
-						pcounter++;
-						//ParagraphAnalizer.getStyle(doc.getParagraphArray(pcounter));
-						setOfFormats.add(ParagraphAnalizer.getStyle(doc.getParagraphArray(pcounter)));
-					}
-					
-				}
+					while (bodyElementIterator.hasNext()) {
+						IBodyElement element = bodyElementIterator.next();
+						
+						
 
+						if ("PARAGRAPH".equalsIgnoreCase(element.getElementType().name())) {
+							XWPFParagraph oPara = (XWPFParagraph) element;
+							if(ParagraphAnalizer.isValidParagraph(oPara)) {
 
-				
+								if("SubBullet" .equalsIgnoreCase(ParagraphAnalizer.getStyle(oPara))){
+									tableSwitch = true;
+								}
+								//ArrowEnding
+								if("ArrowEnding" .equalsIgnoreCase(ParagraphAnalizer.getStyle(oPara))){
+									tableSwitch = false;
+								}
+								if(tableSwitch && isStylePartofTable(oPara)){
+									if(xwpfTable == null ) {
+										//MyOrangeStyle
+										XWPFTable table = template.createTable();
+										table.setStyleID("MyOrangeStyle");
 
-		/*		for(int i=0 ; i < docElements.size() ; i++) {
-					if ("TABLE".equalsIgnoreCase(docElements.get(i))) {
-						tcounter++;
-						System.out.println(tcounter);
-						if(tcounter!=0) {
-							Indent.formatTable(doc.getTableArray(tcounter));
-							CellBorder.formatTable(doc.getTableArray(tcounter));
-							Spacing.formatTable(doc.getTableArray(tcounter));
-							Spacing.setbeforeTable(doc.getParagraphArray(pcounter));
-							Spacing.setafterTable(doc.getParagraphArray(pcounter+1));
+										listOfGeneratedTable.add(table);
+										XWPFTableRow row = table.getRow(0);
+
+										ParagraphAnalizer.cloneParagraph(row.getCell(0).getParagraphs().get(0),oPara);
+									} else {
+										XWPFTableRow row = xwpfTable.createRow();
+										ParagraphAnalizer.cloneParagraph(row.getCell(0).getParagraphs().get(0),oPara);
+									}
+								} else {
+									ParagraphAnalizer.cloneParagraph(template.createParagraph(),oPara);
+									xwpfTable = null;
+								}
+								ParagraphAnalizer.getStyle(oPara);
+								setOfFormats.add(ParagraphAnalizer.getStyle(oPara));
+							}
 						}
-						//doc.getParagraphArray(pcounter).getText();
-						//System.out.println( doc.getParagraphArray(pcounter).getText() );
+						else {
+							System.out.println(element.getElementType().name());
+							if ("Table".equalsIgnoreCase(element.getElementType().name())) {
+								XWPFTable tab = (XWPFTable)element;
+								System.out.println(tab.getStyleID());
+							}
+						}
+
 					}
 
-					if ("PARAGRAPH".equalsIgnoreCase(docElements.get(i))) {
-						pcounter++;
-					}
+
+					FileOutputStream nfos = new FileOutputStream("doc"+i+".docx");
+
+					template.write(nfos);
+
+
+					doc.close();
+
+					System.out.println(setOfFormats);
+					System.out.println(doc.getTables().size());
+					System.out.println(doc.getParagraphs().size());
+					System.out.println(doc.getBodyElements().size());
+
+					i++;
+					//	System.out.println(tableCounter);
+
 				}
-
-				System.out.println(docElements);
-
-*/
-
-				doc.write(fos);
-
-				doc.close();
-
-				System.out.println(setOfFormats);
-				System.out.println(doc.getTables().size());
-				System.out.println(doc.getParagraphs().size());
-				System.out.println(doc.getBodyElements().size());
-
-
-			//	System.out.println(tableCounter);
-
+			} catch (FileFormatException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (FileFormatException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
+	}
+
+
+	public static Boolean isStylePartofTable(XWPFParagraph para ) {
+
+		String oldStyle = ParagraphAnalizer.getStyle(para);
+		if(("BlackBullet".equalsIgnoreCase(oldStyle))
+				|| ("HollowBullets".equalsIgnoreCase(oldStyle) )
+				|| ("SquareBullet".equalsIgnoreCase(oldStyle)) ) {
+
+			return true;
+		}
+		return false;
 
 	}
-//	}
-
 }
