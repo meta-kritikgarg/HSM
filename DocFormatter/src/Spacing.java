@@ -85,9 +85,9 @@ public class Spacing {
 		}
 	}
 	
-	//Set Spacing before 5pt After 7pt (First Line)
+	//Set Spacing before 5pt (First Line)
 	public static void setFirstLine(XWPFParagraph para) {
-		para.setSpacingAfter(140);
+		//para.setSpacingAfter(140);
 		para.setSpacingBefore(100);
 	}
 
@@ -111,10 +111,10 @@ public class Spacing {
 		para.setSpacingBefore(0);
 	}
 
-	//Set Spacing before 5pt After 5pt (Last Line)
+	//Set Spacing After 5pt (Last Line)
 	public static void setLastLine(XWPFParagraph para) {
 		para.setSpacingAfter(100);
-		para.setSpacingBefore(100);
+		//para.setSpacingBefore(100);
 	}
 
 

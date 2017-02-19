@@ -15,7 +15,7 @@ public class DocFormatter {
 
 		int tableCounter = 0;
 		try {
-			String fileName = "HSM Doc 007 - Risk Management v5.docx";
+			String fileName = "HSM Doc 010 - Quality Management v2.docx";
 			if (!(fileName.endsWith(".doc") || fileName.endsWith(".docx"))) {
 				throw new FileFormatException();
 			} else {
