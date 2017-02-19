@@ -19,7 +19,7 @@ public class CellBorder {
 	public static void formatTable(XWPFTable xwpfTable) {
 
 		if(xwpfTable==null){
-			//System.out.println("Null");
+			System.out.println("Null");
 			return;
 		}
 		List<XWPFTableRow> row = xwpfTable.getRows();
@@ -61,10 +61,10 @@ public class CellBorder {
 		CTTblPr tblpro = xwpfTable.getCTTbl().getTblPr();
 
 		CTTblBorders borders = tblpro.addNewTblBorders();
+		setTableBorder(borders.addNewTop());	
 		setTableBorder(borders.addNewBottom());		
 		setTableBorder(borders.addNewRight());
 		setTableBorder(borders.addNewLeft());
-		setTableBorder(borders.addNewTop());	
 	}
 	
 	

@@ -26,14 +26,13 @@ public class DocFormatter {
 		List<String> files = FileFounder.getAllfiles("/C:/Users/Kritik Garg/Documents/OutSide/Weston/OME");
 		Set<String> setOfFormats = new HashSet<String>();
 
-		List<XWPFTable> listOfGeneratedTable = new ArrayList<XWPFTable>();
 
 		XWPFTable xwpfTable = null;
 
 		int i =1;
 		for (String fileName : files) {
 
-			
+			List<XWPFTable> listOfGeneratedTable = new ArrayList<XWPFTable>();
 
 			try {
 				//String fileName = "OME Doc No. 001 - Engine Room Operational Requirements v1.docx";
@@ -71,6 +70,7 @@ public class DocFormatter {
 									if(xwpfTable == null ) {
 										//MyOrangeStyle
 										XWPFTable table = template.createTable();
+										table.getCTTbl().getTblPr().unsetTblBorders();
 										table.setStyleID("MyOrangeStyle");
 
 										listOfGeneratedTable.add(table);
@@ -83,7 +83,11 @@ public class DocFormatter {
 									}
 								} else {
 									ParagraphAnalizer.cloneParagraph(template.createParagraph(),oPara);
-									xwpfTable = null;
+									
+									if(xwpfTable!= null){
+										
+										xwpfTable = null;
+									}
 								}
 								ParagraphAnalizer.getStyle(oPara);
 								setOfFormats.add(ParagraphAnalizer.getStyle(oPara));
@@ -99,14 +103,23 @@ public class DocFormatter {
 
 					}
 
+					
 
+					
 					FileOutputStream nfos = new FileOutputStream("doc"+i+".docx");
 
 					template.write(nfos);
 
 
 					doc.close();
-
+					
+/*					
+					for (XWPFTable xwpfTable2 : listOfGeneratedTable) {
+						Indent.formatTable(xwpfTable2);
+						CellBorder.formatTable(xwpfTable2);
+						Spacing.formatTable(xwpfTable2);
+					}
+*/
 					System.out.println(setOfFormats);
 					System.out.println(doc.getTables().size());
 					System.out.println(doc.getParagraphs().size());

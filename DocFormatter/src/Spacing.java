@@ -1,16 +1,10 @@
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBorder;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
 
 public class Spacing {
 
@@ -52,7 +46,7 @@ public class Spacing {
 						XWPFParagraph p = xwpfTableCell.getParagraphArray(0);
 						//System.out.println(p.getIndentFromLeft() + p.getStyleID()+" -- "+ p.getText());
 						//p.setIndentFromLeft(490);
-						setMiddleLine(p);
+						setSpacingbyIndentLevelofParagraph(p);
 						if(i==0) { setFirstLine(p);}
 						if(i==rows-1) { setLastLine(p);}
 
@@ -64,9 +58,30 @@ public class Spacing {
 	}
 
 
-	//Set Spacing before 5pt After 7pt (First Line)
+	public static void setSpacingbyIndentLevelofParagraph(XWPFParagraph p) {
+		System.out.println(p.getIndentFromLeft() + p.getStyle()+" -- "+ p.getText());
+		if(p.getStyleID()!= null && p.getStyleID().contains("dotlist")) {
+			System.out.println("--------dot");
+			setMiddleLine(p);
+		}
+		if(p.getStyleID()!= null && p.getStyleID().contains("secondList")) {
+			System.out.println("--------secondList");
+			setMiddleLineSecondIndent(p);
+		}
+		if(p.getStyleID()!= null && p.getStyleID().contains("listthird")) {
+			System.out.println("--------listthird");
+			setMiddleLineSecondIndent(p);
+			//p.s
+			//p.setIndentFromLeft(1392);
+		}
+		if(p.getIndentFromLeft()==1800) {
+			//p.setIndentFromLeft(1392);
+		}
+	}
+	
+	//Set Spacing before 5pt (First Line)
 	public static void setFirstLine(XWPFParagraph para) {
-		para.setSpacingAfter(140);
+		//para.setSpacingAfter(140);
 		para.setSpacingBefore(100);
 	}
 
@@ -84,11 +99,16 @@ public class Spacing {
 		para.setSpacingBefore(100);
 	}
 
+	//Set Spacing before 0pt After 7pt (medium Line-- second indent)
+	public static void setMiddleLineSecondIndent(XWPFParagraph para) {
+		para.setSpacingAfter(140);
+		para.setSpacingBefore(0);
+	}
 
-	//Set Spacing before 5pt After 5pt (Last Line)
+	//Set Spacing After 5pt (Last Line)
 	public static void setLastLine(XWPFParagraph para) {
 		para.setSpacingAfter(100);
-		para.setSpacingBefore(100);
+		//para.setSpacingBefore(100);
 	}
 
 
