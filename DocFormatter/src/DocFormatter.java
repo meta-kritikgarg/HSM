@@ -46,21 +46,32 @@ public class DocFormatter {
 					XWPFDocument template = FileHandler.openFile("templete1.docx");     
 					//template.
 
-					Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
+					List<String> subBullets = new ArrayList<String>();
+					subBullets.add("In This Document");
 
-					Boolean tableSwitch = false;
+					List<IBodyElement> bodyElementList = doc.getBodyElements();
 					
-					while (bodyElementIterator.hasNext()) {
-						IBodyElement element = bodyElementIterator.next();
+						
+					
+					 
+					Boolean tableSwitch = false;
+					int inThisDoc = -1;
+					
+					for (int j = 0; j < bodyElementList.size(); j++) {
+						
+						IBodyElement element = bodyElementList.get(j);
 						
 						
-
+						
 						if ("PARAGRAPH".equalsIgnoreCase(element.getElementType().name())) {
 							XWPFParagraph oPara = (XWPFParagraph) element;
 							if(ParagraphAnalizer.isValidParagraph(oPara)) {
 
 								if("SubBullet" .equalsIgnoreCase(ParagraphAnalizer.getStyle(oPara))){
 									tableSwitch = true;
+									if(inThisDoc==-1)
+									inThisDoc = j;
+									subBullets.add(oPara.getText());
 								}
 								//ArrowEnding
 								if("ArrowEnding" .equalsIgnoreCase(ParagraphAnalizer.getStyle(oPara))){
@@ -103,6 +114,7 @@ public class DocFormatter {
 
 					}
 
+					template.createTable(subBullets.size(), 2);
 					
 
 					
