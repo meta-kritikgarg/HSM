@@ -8,13 +8,20 @@ public class Style {
 
 		String newStyle = new String();
 		if(OldStyle == null) {
-			System.out.println("No style Syyle in old Doc");
+			//System.out.println("No style Style in old Doc...");
 			return null;
 		}
 		switch (OldStyle) {
 		case "BlackBullet": 
 			newStyle = "dotlist";
 			break;
+			
+			//ecxmsonormal
+		case "ecxmsonormal": 
+			newStyle = "dotlist";
+			break;
+				
+			
 		case "HollowBullets":
 			newStyle = "secondList";
 			break;
@@ -23,6 +30,17 @@ public class Style {
 
 			break;
 		case "Paragraph1":
+			newStyle = "myParagraph";
+
+			break;
+			
+		case "ListParagraph":
+			newStyle = "myParagraph";
+
+			break;
+			//OmniPage1
+			
+		case "OmniPage1":
 			newStyle = "myParagraph";
 
 			break;
@@ -44,10 +62,12 @@ public class Style {
 			newStyle = "Heading1";
 
 			break;
+			
+			//ListParagraph
 
 		default:
 			System.out.println("Unhandled Syyle: "+ OldStyle );
-			newStyle = "null";
+			newStyle = null;
 			break;
 		}
 

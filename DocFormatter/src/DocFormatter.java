@@ -109,21 +109,21 @@ public class DocFormatter {
 							}
 						}
 						else {
-							System.out.println(element.getElementType().name());
+							//System.out.println(element.getElementType().name());
 							if ("Table".equalsIgnoreCase(element.getElementType().name())) {
 								XWPFTable tab = (XWPFTable)element;
-								XWPFTable newTable = template.createTable();
-								
-								CTTbl tbl = newTable.getCTTbl(); 
+								//XWPFTable newTable = template.createTable();
+								CTTbl tbl = template.createTable().getCTTbl(); 
 
 								tbl.set(tab.getCTTbl()); 
 
 								XWPFTable table2 = new XWPFTable(tbl, template); 
 
-								table2.getRows().get(0).getCell(0).setText("test");
-
+								//table2.getRows().get(0).getCell(0).setText("test");
+							}
+							else {
 								
-								
+								System.out.println(element.getElementType().name());
 							}
 						}
 
@@ -148,10 +148,18 @@ public class DocFormatter {
 						Spacing.formatTable(xwpfTable2);
 					}
 */
+					
+					
+					if(doc.getBodyElements().size() == (doc.getAllPictures().size()+ doc.getTables().size() + doc.getParagraphs().size())){
+						System.out.println("All elements copied \n" + fileName);
+					} else {
+						System.out.println("Unhandled Elements in Doc " + fileName);
+						System.out.println(doc.getAllPictures().size());
+						System.out.println(doc.getTables().size());
+						System.out.println(doc.getParagraphs().size());
+						System.out.println(doc.getBodyElements().size());
+					}
 					System.out.println(setOfFormats);
-					System.out.println(doc.getTables().size());
-					System.out.println(doc.getParagraphs().size());
-					System.out.println(doc.getBodyElements().size());
 
 					i++;
 					//	System.out.println(tableCounter);
