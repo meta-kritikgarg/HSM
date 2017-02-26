@@ -2,18 +2,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.poi.POIXMLDocumentPart;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.impl.piccolo.io.FileFormatException;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
 import filehandler.FileFounder;
 import filehandler.FileHandler;
@@ -23,7 +27,7 @@ public class DocFormatter {
 	public static void main(String[] args) throws Exception {
 
 
-		List<String> files = FileFounder.getAllfiles("/C:/Users/Kritik Garg/Documents/OutSide/Weston/OME");
+		List<String> files = FileFounder.getAllfiles("/C:/Users/Kritik Garg/Documents/OutSide/Weston/OMDR/exp");
 		Set<String> setOfFormats = new HashSet<String>();
 
 
@@ -108,7 +112,18 @@ public class DocFormatter {
 							System.out.println(element.getElementType().name());
 							if ("Table".equalsIgnoreCase(element.getElementType().name())) {
 								XWPFTable tab = (XWPFTable)element;
-								System.out.println(tab.getStyleID());
+								XWPFTable newTable = template.createTable();
+								
+								CTTbl tbl = newTable.getCTTbl(); 
+
+								tbl.set(tab.getCTTbl()); 
+
+								XWPFTable table2 = new XWPFTable(tbl, template); 
+
+								table2.getRows().get(0).getCell(0).setText("test");
+
+								
+								
 							}
 						}
 
@@ -117,8 +132,9 @@ public class DocFormatter {
 					//template.createTable(subBullets.size(), 2);
 					
 
+					Path p = Paths.get(fileName);
 					
-					FileOutputStream nfos = new FileOutputStream("doc"+i+".docx");
+					FileOutputStream nfos = new FileOutputStream("OMDout/"+p.getFileName().toString());
 
 					template.write(nfos);
 
