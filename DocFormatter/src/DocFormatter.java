@@ -114,7 +114,7 @@ public class DocFormatter {
 
 					}
 
-					template.createTable(subBullets.size(), 2);
+					//template.createTable(subBullets.size(), 2);
 					
 
 					

@@ -31,7 +31,7 @@ public class Style {
 
 			break;
 		case "ArrowEnding":
-			newStyle = "checkedlist";
+			newStyle = "Redbg";
 
 			break;
 			
